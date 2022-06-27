@@ -35,13 +35,19 @@ CMD ["npm", "start"]
 # we can ues this image as a base image or run it as a container
 
 # to use this image, we push it to a container registry (i.e docker hub or a cloud provider)
-# docker push
-# docker pull
+# but first, login and create a tag for your named container
+# docker login
+# docker tag hackweek/kubernetes-sidecar:1.0 joshpark/kubernetes-sidcar 
+# docker push joshpark/kubernetes-sidcar
+# docker pull joshpark/kubernetes-sidcar
 
-# "docker run hackweek/kubernetes-sidecar:1.0"
-# you can see which image is running on docker desktop
-# however, we can't see our app on localhost even though our image is running
-# why? we exposed port 8080, but it's not accessible to outside world by default
-# port forward to localhost 5000 port 8080
-# "docker run -p 5000:8080 hackweek/kubernetes-sidecar:1.0"
+# container list
+# docker ps
+
+# docker run hackweek/kubernetes-sidecar:1.0
+# We exposed port 8080, but it's not accessible to outside world by default
+# To view our server/container, port forward to localhost 5000 port 8080
+# docker run -p 5000:8080 hackweek/kubernetes-sidecar:1.0
+# -d is used to detach container from terminal
+# docker run -d -p 8080:8080 node-docker
 

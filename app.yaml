@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kubernetes-sidecar
+  name: kubernetes-sidecar
+spec:
+  # replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes-sidecar
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: kubernetes-sidecar
+    spec:
+      containers:
+      - image: itsthenetwork/alpine-tcpdump:latest
+        name: tcpdump-sidecar
+        resources: {}
+        ports:
+          - containerPort: 3000
+        volumeMounts:
+          - name: var-logs
+            mountPath: /var/log
+      - image: joshpark/kubernetes-sidecar
+        name: main-app
+        resources: {}
+        ports:
+          - containerPort: 8080
+        volumeMounts:
+          - name: var-logs
+            mountPath: /var/log
+      dnsPolicy: Default
+      volumes:
+      - name: var-logs
+        emptyDir: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-service
+  labels:
+    run: nodejs-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    app: nodejs-service
+  type: NodePort

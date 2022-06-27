@@ -7,6 +7,7 @@ spec:
   containers:
   - image: busybox
     command: ["/bin/sh"]
+    # busybox is not an executable, not a server. so we have to continously loop
     args: ["-c", "while true; do echo echo $(date -u) 'Hi I am from Sidecar container' >> /var/log/index.html; sleep 5;done"]
     name: sidecar-container
     resources: {}
