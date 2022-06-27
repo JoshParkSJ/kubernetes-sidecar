@@ -6,7 +6,7 @@ kubectl get pod -A # check out your shiny new cluster
 kubectl create -f app.yaml # create a pod using pod.yaml script
 kubectl exec -it kubernetes-sidecar -c main-container -- /bin/sh # start an executable into pod "sidecar-container-demo" (or i.e nginx-webapp-6d7b787bd5-ttv4t) and name "main-container"
 apt-get update && apt-get install -y curl # individual executes (install apt-get and curl)
-curl localhost # individual executes (query localhost and see the response)
+curl localhost:8080 # individual executes (query localhost and see the response)
 
 # create a deployment
 kubectl create -f app.yaml
@@ -18,7 +18,8 @@ kubectl get pod -o wide # ip addresses of every replica (use external IP to acce
 kubectl get svc -o wide # 80:3XXXX means port 80 is mapped to service obj's port 3XXXX (use 3XXXX for external access)
 
 # create a tunnel to the cluster and produce a url that accesses the cluster (i.e all the pods)
-minikube service nginx-webapp --url
+kubectl expose deployment kubernetes-sidecar --type=LoadBalancer --name=my-service
+minikube service my-service --url
 
 # info about cluster and master node
 kubectl cluster-info
